@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For You 💖</title>
+  <style>
+    body {
+      background-color: #fff0f5;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #d63384;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 20px;
+      background-color: #ff66a3;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .hidden {
+      display: none;
+    }
+    img {
+      max-width: 90%;
+      border-radius: 20px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    #message {
+      font-size: 20px;
+      color: #444;
+      margin-top: 30px;
+      min-height: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎁 Just For You...</h1>
+  <p>এইটা শুধু তোমার জন্য, ধীরে ধীরে খুলে দেখো!</p>
+
+  <button id="startBtn" onclick="stepOne()">💌 শুরু করো</button>
+
+  <div id="message" class="hidden"></div>
+
+  <div id="imageStep" class="hidden">
+    <img src="1000005661.jpg" alt="Our Memory" />
+    <br>
+    <button onclick="finalMessage()">✨ শেষ কথাটা</button>
+  </div>
+
+  <div id="final" class="hidden">
+    <p id="lastLine"></p>
+  </div>
+
+  <script>
+    const messages = [
+      "তুমি আমার জীবনের সবচেয়ে সুন্দর অনুভূতির নাম... 💖",
+      "এই মুহূর্তটা মনে আছে? সেই দিনটা আজও আমার মনে গেঁথে আছে... 🌸"
+    ];
+
+    let index = 0;
+
+    function typeMessage(text, elementId, callback) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = "";
+      let i = 0;
+      let typing = setInterval(() => {
+        element.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(typing);
+          if (callback) setTimeout(callback, 800);
+        }
+      }, 50);
+    }
+
+    function stepOne() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("message").classList.remove("hidden");
+      typeMessage(messages[0], "message", () => {
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "👉 পরেরটা দেখো";
+        nextBtn.onclick = stepTwo;
+        document.body.appendChild(nextBtn);
+      });
+    }
+
+    function stepTwo() {
+      document.querySelector("button[onclick='stepTwo()']").remove();
+      document.getElementById("message").innerHTML = "";
+      typeMessage(messages[1], "message", () => {
+        document.getElementById("imageStep").classList.remove("hidden");
+      });
+    }
+
+    function finalMessage() {
+      document.getElementById("imageStep").classList.add("hidden");
+      document.getElementById("final").classList.remove("hidden");
+      typeMessage("তুমি শুধু আমার ভালোবাসা না, তুমি আমার শান্তি, হাসি আর স্বপ্ন... 🌙", "lastLine");
+    }
+  </script>
+
+</body>
+</html>
